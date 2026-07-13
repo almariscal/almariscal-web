@@ -43,15 +43,24 @@ img{max-width:100%;display:block}
   background-size:56px 56px;pointer-events:none;z-index:1}
 .hero-inner{position:relative;z-index:2;display:flex;align-items:center;gap:64px;padding-top:80px;padding-bottom:88px}
 
-/* ---------- Aurora (fondo animado del hero) ---------- */
+/* ---------- Fondo (wash de dos tonos, muy lento, sin "bolas") ---------- */
 .aurora{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
-.aurora span{position:absolute;border-radius:50%;filter:blur(60px);opacity:.6;mix-blend-mode:screen;will-change:transform}
-.aurora span:nth-child(1){width:520px;height:520px;background:radial-gradient(circle,var(--accent) 0%,transparent 65%);top:-160px;left:-80px;animation:auroraFloat1 22s ease-in-out infinite}
-.aurora span:nth-child(2){width:460px;height:460px;background:radial-gradient(circle,var(--accent-2) 0%,transparent 65%);bottom:-200px;right:-60px;animation:auroraFloat2 26s ease-in-out infinite}
-.aurora span:nth-child(3){width:360px;height:360px;background:radial-gradient(circle,#818CF8 0%,transparent 65%);top:20%;right:15%;animation:auroraFloat3 30s ease-in-out infinite}
-@keyframes auroraFloat1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(60px,40px) scale(1.15)}}
-@keyframes auroraFloat2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-50px,-30px) scale(1.1)}}
-@keyframes auroraFloat3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-40px,50px) scale(.9)}}
+.aurora::before,.aurora::after{content:"";position:absolute;inset:-20%;background-repeat:no-repeat}
+.aurora::before{
+  background:radial-gradient(60% 50% at 82% 8%,rgba(37,99,235,.28) 0%,transparent 60%);
+  animation:washDrift1 46s ease-in-out infinite;
+}
+.aurora::after{
+  background:radial-gradient(50% 45% at 8% 95%,rgba(8,145,178,.16) 0%,transparent 62%);
+  animation:washDrift2 54s ease-in-out infinite;
+}
+@keyframes washDrift1{0%,100%{transform:translate(0,0)}50%{transform:translate(-3%,4%)}}
+@keyframes washDrift2{0%,100%{transform:translate(0,0)}50%{transform:translate(3%,-3%)}}
+
+/* Foco que sigue al cursor — sutil, solo se ve donde está el ratón */
+.aurora .spot{position:absolute;inset:0;opacity:0;transition:opacity .4s ease;
+  background:radial-gradient(320px circle at var(--mx,50%) var(--my,50%),rgba(129,140,248,.16),transparent 70%)}
+.hero:hover .aurora .spot,.page-head:hover .aurora .spot{opacity:1}
 
 /* ---------- Textura de grano ---------- */
 .grain{position:fixed;inset:0;z-index:9998;pointer-events:none;opacity:.035;mix-blend-mode:overlay;
@@ -66,6 +75,19 @@ img{max-width:100%;display:block}
 .cursor-ring{width:34px;height:34px;border:1.5px solid rgba(8,145,178,.5);transition:width .2s,height .2s,border-color .2s,opacity .2s}
 .cursor-ring.hovering{width:52px;height:52px;border-color:var(--accent-2);background:rgba(8,145,178,.08)}
 body.has-custom-cursor,body.has-custom-cursor a,body.has-custom-cursor button{cursor:none}
+
+/* ---------- Transición de bloque al hacer scroll ---------- */
+.sec-fade{opacity:0;transform:translateY(34px) scale(.978);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1)}
+.sec-fade.sec-in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.sec-fade{opacity:1;transform:none;transition:none}}
+
+/* ---------- Costuras suaves entre bloques oscuros y claros ---------- */
+.stats{position:relative}
+.stats::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:90px;background:linear-gradient(var(--dark-1),var(--light));pointer-events:none}
+.guarantee{position:relative}
+.guarantee::before{content:"";position:absolute;left:0;right:0;top:-1px;height:70px;background:linear-gradient(var(--light),var(--dark-1));pointer-events:none}
+.contact{position:relative}
+.contact::before{content:"";position:absolute;left:0;right:0;top:-1px;height:70px;background:linear-gradient(#fff,var(--dark-1));pointer-events:none}
 .hero-copy{flex:1;min-width:0}
 .eyebrow{display:inline-block;font-size:12.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-2);border:1px solid rgba(8,145,178,.4);border-radius:999px;padding:6px 14px;margin-bottom:22px}
 .hero h1{font-weight:800;font-size:54px;line-height:1.1;letter-spacing:-.025em;margin-bottom:20px}
@@ -249,7 +271,7 @@ body.has-custom-cursor,body.has-custom-cursor a,body.has-custom-cursor button{cu
 
 @media (prefers-reduced-motion:reduce){
   .reveal{opacity:1;transform:none;filter:none;transition:none}
-  .aurora span{animation:none}
+  .aurora::before,.aurora::after{animation:none}
   .btn,.btn-outline{transition:none}
 }
 

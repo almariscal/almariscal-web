@@ -31,6 +31,30 @@ document.addEventListener('DOMContentLoaded', function () {
     }, { passive: true });
   }
 
+  // Foco que sigue al cursor dentro de las zonas oscuras (hero / cabeceras)
+  if (!reduceMotion) {
+    document.querySelectorAll('.hero, .page-head').forEach(function (zone) {
+      var spot = zone.querySelector('.spot');
+      if (!spot) return;
+      zone.addEventListener('mousemove', function (ev) {
+        var r = zone.getBoundingClientRect();
+        spot.style.setProperty('--mx', ((ev.clientX - r.left) / r.width * 100) + '%');
+        spot.style.setProperty('--my', ((ev.clientY - r.top) / r.height * 100) + '%');
+      });
+    });
+  }
+
+  // Transición de bloque al hacer scroll: cada sección (menos la primera pantalla) entra con fundido + escala suave
+  var sectionIo = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('sec-in'); sectionIo.unobserve(e.target); }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -10% 0px' });
+  document.querySelectorAll('section:not(.hero), .cta-band').forEach(function (el) {
+    el.classList.add('sec-fade');
+    sectionIo.observe(el);
+  });
+
   // Cursor personalizado + botones magnéticos (solo desktop con puntero fino, sin "reducir movimiento")
   var canCustomCursor = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   if (canCustomCursor && !reduceMotion) {
