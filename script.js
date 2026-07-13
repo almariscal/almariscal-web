@@ -31,19 +31,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }, { passive: true });
   }
 
-  // Foco que sigue al cursor dentro de las zonas oscuras (hero / cabeceras)
-  if (!reduceMotion) {
-    document.querySelectorAll('.hero, .page-head').forEach(function (zone) {
-      var spot = zone.querySelector('.spot');
-      if (!spot) return;
-      zone.addEventListener('mousemove', function (ev) {
-        var r = zone.getBoundingClientRect();
-        spot.style.setProperty('--mx', ((ev.clientX - r.left) / r.width * 100) + '%');
-        spot.style.setProperty('--my', ((ev.clientY - r.top) / r.height * 100) + '%');
-      });
-    });
-  }
-
   // Transición de bloque al hacer scroll: cada sección (menos la primera pantalla) entra con fundido + escala suave
   var sectionIo = new IntersectionObserver(function (entries) {
     entries.forEach(function (e) {
@@ -55,27 +42,24 @@ document.addEventListener('DOMContentLoaded', function () {
     sectionIo.observe(el);
   });
 
-  // Cursor personalizado + botones magnéticos (solo desktop con puntero fino, sin "reducir movimiento")
+  // Cursor personalizado en forma de logotipo (AM) + botones magnéticos (solo desktop con puntero fino)
   var canCustomCursor = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   if (canCustomCursor && !reduceMotion) {
     document.body.classList.add('has-custom-cursor');
-    var dot = document.createElement('div'); dot.className = 'cursor-dot';
-    var ring = document.createElement('div'); ring.className = 'cursor-ring';
-    document.body.appendChild(dot); document.body.appendChild(ring);
+    var logo = document.createElement('div'); logo.className = 'cursor-logo';
+    document.body.appendChild(logo);
 
-    var rx = 0, ry = 0;
+    var darkZones = document.querySelectorAll('.hero,.stats,.guarantee,.contact,.page-head');
     document.addEventListener('mousemove', function (ev) {
-      dot.style.left = ev.clientX + 'px'; dot.style.top = ev.clientY + 'px';
-      rx = ev.clientX; ry = ev.clientY;
+      logo.style.left = ev.clientX + 'px'; logo.style.top = ev.clientY + 'px';
+      var el = document.elementFromPoint(ev.clientX, ev.clientY);
+      var onDark = el && el.closest && el.closest('.hero,.stats,.guarantee,.contact,.page-head,.comp.me');
+      logo.classList.toggle('on-dark', !!onDark);
     });
-    (function loop() {
-      ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
-      requestAnimationFrame(loop);
-    })();
 
     document.querySelectorAll('a,button,.btn,.btn-outline,input,textarea').forEach(function (el) {
-      el.addEventListener('mouseenter', function () { ring.classList.add('hovering'); });
-      el.addEventListener('mouseleave', function () { ring.classList.remove('hovering'); });
+      el.addEventListener('mouseenter', function () { logo.classList.add('hovering'); });
+      el.addEventListener('mouseleave', function () { logo.classList.remove('hovering'); });
     });
 
     // Botones magnéticos: se desplazan levemente hacia el cursor
