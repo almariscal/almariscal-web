@@ -64,6 +64,21 @@ img{max-width:100%;display:block}
 .photo-tag strong{display:block;font-weight:800;font-size:14.5px}
 .photo-tag span{color:var(--on-navy-mid)}
 
+/* ---------- Carrusel de palabras (inspirado en b-ta.ai, tipo rueda de selección) ---------- */
+.word-picker-line{font-size:19px;color:var(--on-navy-mid);margin-bottom:22px;line-height:1.6}
+.word-picker{position:relative;display:inline-block;width:11ch;height:1.5em;overflow:hidden;vertical-align:-.3em;text-align:left}
+.wp-track{display:block;position:relative;width:100%;height:100%}
+.wp-item{position:absolute;left:0;top:50%;width:100%;white-space:nowrap;font-weight:800;letter-spacing:-.02em;color:var(--on-navy);
+  transform:translateY(-50%);transition:transform .5s cubic-bezier(.4,0,.2,1),opacity .5s ease,filter .5s ease,color .5s ease}
+.wp-item[data-dist="0"]{opacity:1;filter:blur(0);color:var(--on-navy)}
+.wp-item[data-dist="-1"]{transform:translateY(-150%) scale(.78);opacity:.45;filter:blur(1.5px);color:var(--on-navy-mid);font-weight:600}
+.wp-item[data-dist="1"]{transform:translateY(50%) scale(.78);opacity:.45;filter:blur(1.5px);color:var(--on-navy-mid);font-weight:600}
+.wp-item[data-dist="2"]{transform:translateY(150%) scale(.6);opacity:0;filter:blur(2px)}
+.wp-item[data-dist="-2"]{transform:translateY(-250%) scale(.6);opacity:0;filter:blur(2px)}
+.word-picker.wp-static .wp-item{transition:none}
+.word-picker.wp-static .wp-item:not(:first-child){display:none}
+.word-picker.wp-static .wp-item:first-child{position:static;transform:none;opacity:1;filter:none}
+
 /* ---------- Textura de grano (muy sutil, no es color) ---------- */
 .grain{position:fixed;inset:0;z-index:9998;pointer-events:none;opacity:.03;mix-blend-mode:overlay;
   background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>")}

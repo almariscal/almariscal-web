@@ -42,6 +42,31 @@ document.addEventListener('DOMContentLoaded', function () {
     sectionIo.observe(el);
   });
 
+  // Carrusel de palabras del hero (rueda tipo selector de iPhone)
+  var wp = document.querySelector('.word-picker');
+  if (wp) {
+    var wpItems = wp.querySelectorAll('.wp-item');
+    var wpTotal = wpItems.length;
+    var wpActive = 0;
+    if (reduceMotion) {
+      wp.classList.add('wp-static');
+    } else {
+      var wpRender = function () {
+        wpItems.forEach(function (item, i) {
+          var diff = i - wpActive;
+          if (diff < -1) diff += wpTotal;
+          if (diff > 2) diff -= wpTotal;
+          item.setAttribute('data-dist', diff);
+        });
+      };
+      wpRender();
+      setInterval(function () {
+        wpActive = (wpActive + 1) % wpTotal;
+        wpRender();
+      }, 2200);
+    }
+  }
+
   // Cursor personalizado en forma de logotipo (AM) + botones magnéticos (solo desktop con puntero fino)
   var canCustomCursor = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   if (canCustomCursor && !reduceMotion) {
