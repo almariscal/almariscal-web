@@ -20,8 +20,8 @@ document.addEventListener('DOMContentLoaded', function () {
       ev.preventDefault();
       var d = new FormData(form);
       var body = 'Nombre: ' + d.get('nombre') + '\nEmpresa: ' + d.get('empresa') + '\nEmail: ' + d.get('email') + '\n\n' + d.get('mensaje');
-      window.location.href = 'mailto:CAMBIA-ESTE-EMAIL@example.com?subject=' +
-        encodeURIComponent('Radiografía de datos — ' + d.get('empresa')) +
+      window.location.href = 'mailto:albertolmariscal@gmail.com?subject=' +
+        encodeURIComponent('[LEAD WEB · Radiografía] ' + d.get('empresa')) +
         '&body=' + encodeURIComponent(body);
     });
   }
