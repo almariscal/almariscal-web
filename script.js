@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // Stagger: dentro de un mismo contenedor, cada .reveal se retrasa un poco más que el anterior.
-  document.querySelectorAll('.pain-grid,.verdict-grid,.compare,.roadmap,.milestones,.post-list,.about-facts,.stats-inner').forEach(function (group) {
+  document.querySelectorAll('.pain-grid,.verdict-grid,.compare,.milestones,.post-list,.about-facts,.stats-inner').forEach(function (group) {
     Array.prototype.forEach.call(group.querySelectorAll('.reveal'), function (el, i) {
       el.style.transitionDelay = Math.min(i * 70, 280) + 'ms';
     });
@@ -42,30 +42,38 @@ document.addEventListener('DOMContentLoaded', function () {
     sectionIo.observe(el);
   });
 
-  // Carrusel de palabras del hero (rueda tipo selector de iPhone)
-  var wp = document.querySelector('.word-picker');
-  if (wp) {
-    var wpItems = wp.querySelectorAll('.wp-item');
-    var wpTotal = wpItems.length;
-    var wpActive = 0;
+  // Carrusel de palabras a pantalla completa (rueda tipo selector de iPhone)
+  var wf = document.querySelector('.word-full');
+  if (wf) {
+    var wfItems = wf.querySelectorAll('.wf-item');
+    var wfTotal = wfItems.length;
+    var wfActive = 0;
     if (reduceMotion) {
-      wp.classList.add('wp-static');
+      wf.classList.add('wf-static');
     } else {
-      var wpRender = function () {
-        wpItems.forEach(function (item, i) {
-          var diff = i - wpActive;
-          if (diff < -1) diff += wpTotal;
-          if (diff > 2) diff -= wpTotal;
+      var wfRender = function () {
+        wfItems.forEach(function (item, i) {
+          var diff = i - wfActive;
+          if (diff < -1) diff += wfTotal;
+          if (diff > 2) diff -= wfTotal;
           item.setAttribute('data-dist', diff);
         });
       };
-      wpRender();
+      wfRender();
       setInterval(function () {
-        wpActive = (wpActive + 1) % wpTotal;
-        wpRender();
+        wfActive = (wfActive + 1) % wfTotal;
+        wfRender();
       }, 2200);
     }
   }
+
+  // Pasos del método a pantalla completa: cada paso aparece con fundido al entrar en su propio scroll anidado
+  var msIo = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      e.target.classList.toggle('ms-in', e.isIntersecting);
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.ms-step').forEach(function (el) { msIo.observe(el); });
 
   // Cursor personalizado en forma de logotipo (AM) + botones magnéticos (solo desktop con puntero fino)
   var canCustomCursor = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
