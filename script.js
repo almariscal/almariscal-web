@@ -49,6 +49,23 @@ document.addEventListener('DOMContentLoaded', function () {
   if (wf && wfScroll && wfBox) {
     var wfItems = wf.querySelectorAll('.wf-item');
     var wfTotal = wfItems.length;
+
+    // Encoge la fuente si la palabra más larga no cabe en el ancho disponible (evita recortes en móvil)
+    var wfFit = function () {
+      wfItems.forEach(function (item) { item.style.fontSize = ''; });
+      var longest = wfItems[0];
+      wfItems.forEach(function (item) { if (item.scrollWidth > longest.scrollWidth) longest = item; });
+      var avail = wfBox.clientWidth - 12;
+      var actual = longest.scrollWidth;
+      if (actual > avail) {
+        var base = parseFloat(window.getComputedStyle(longest).fontSize);
+        var fitted = Math.floor(base * (avail / actual));
+        wfItems.forEach(function (item) { item.style.fontSize = fitted + 'px'; });
+      }
+    };
+    wfFit();
+    window.addEventListener('resize', wfFit);
+
     if (reduceMotion) {
       wf.classList.add('wf-static');
     } else {
