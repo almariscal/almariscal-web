@@ -179,6 +179,17 @@ body.has-custom-cursor,body.has-custom-cursor a,body.has-custom-cursor button{cu
 .cta-secondary small{display:block;font-weight:400;color:var(--on-navy-mid);font-size:12.5px}
 .contact-note{margin-top:26px;font-size:14px;color:var(--on-navy-mid)}
 
+.contact-form-block{max-width:480px;margin:56px auto 0;padding-top:40px;border-top:1px solid var(--line-dark);text-align:center}
+.contact-form-divider{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--on-navy-mid);margin-bottom:10px}
+.contact-form-block h3{font-weight:800;font-size:22px;letter-spacing:-.01em;margin-bottom:10px}
+.contact-form-block .contact-sub{font-size:15.5px;margin-bottom:24px}
+.form{display:grid;gap:14px;text-align:left}
+.form label{font-size:13.5px;font-weight:600;color:var(--on-navy-mid);display:grid;gap:7px}
+.form input,.form textarea{width:100%;background:rgba(255,255,255,.06);border:1.5px solid var(--line-dark);border-radius:9px;padding:13px 15px;color:var(--on-navy);font:inherit;font-size:15px}
+.form input:focus,.form textarea:focus{outline:none;border-color:#fff}
+.form textarea{min-height:100px;resize:vertical}
+.form .btn{width:100%;text-align:center;border:none;cursor:pointer;font-family:inherit;margin-top:4px}
+
 /* ---------- Página interior ---------- */
 .page-head{background:var(--navy);color:var(--on-navy)}
 .page-head-inner{padding-top:64px;padding-bottom:72px}

@@ -135,4 +135,17 @@ document.addEventListener('DOMContentLoaded', function () {
       btn.addEventListener('mouseleave', function () { btn.style.transform = ''; });
     });
   }
+
+  // Envío del formulario por mailto (sitio estático, sin backend).
+  var form = document.getElementById('lead-form');
+  if (form) {
+    form.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var d = new FormData(form);
+      var body = 'Nombre: ' + d.get('nombre') + '\nEmpresa: ' + d.get('empresa') + '\nEmail: ' + d.get('email') + '\n\n' + d.get('mensaje');
+      window.location.href = 'mailto:albertolmariscal@gmail.com?subject=' +
+        encodeURIComponent('[LEAD WEB · Radiografía] ' + (d.get('empresa') || d.get('nombre'))) +
+        '&body=' + encodeURIComponent(body);
+    });
+  }
 });
