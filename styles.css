@@ -65,9 +65,10 @@ img{max-width:100%;display:block}
 .photo-tag strong{display:block;font-weight:800;font-size:14.5px}
 .photo-tag span{color:var(--on-navy-mid)}
 
-/* ---------- Carrusel de palabras a pantalla completa (inspirado en b-ta.ai) ---------- */
-.word-full{height:100vh;height:100dvh;background:var(--navy);color:var(--on-navy);display:flex;flex-direction:column;
-  align-items:center;justify-content:center;text-align:center;overflow:hidden;position:relative;padding:24px}
+/* ---------- Carrusel de palabras a pantalla completa (inspirado en b-ta.ai, avanza con el scroll) ---------- */
+.word-full-scroll{height:400vh;position:relative}
+.word-full{position:sticky;top:0;height:100vh;height:100dvh;background:var(--navy);color:var(--on-navy);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;overflow:hidden;padding:24px}
 .word-full-label{font-size:clamp(16px,2.2vw,22px);font-weight:600;color:var(--on-navy-mid);letter-spacing:-.01em;line-height:1.4;margin-bottom:12px}
 .word-full-display{position:relative;width:100%;height:clamp(90px,18vw,220px);overflow:hidden}
 .wf-track{position:relative;width:100%;height:100%}

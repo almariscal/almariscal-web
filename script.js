@@ -42,28 +42,38 @@ document.addEventListener('DOMContentLoaded', function () {
     sectionIo.observe(el);
   });
 
-  // Carrusel de palabras a pantalla completa (rueda tipo selector de iPhone)
+  // Carrusel de palabras a pantalla completa: la palabra activa avanza con el scroll, no con un temporizador
   var wf = document.querySelector('.word-full');
-  if (wf) {
+  var wfScroll = document.querySelector('.word-full-scroll');
+  if (wf && wfScroll) {
     var wfItems = wf.querySelectorAll('.wf-item');
     var wfTotal = wfItems.length;
-    var wfActive = 0;
+    var wfActive = -1;
+    var wfRender = function (idx) {
+      wfItems.forEach(function (item, i) {
+        var diff = i - idx;
+        if (diff < -1) diff += wfTotal;
+        if (diff > 2) diff -= wfTotal;
+        item.setAttribute('data-dist', diff);
+      });
+    };
     if (reduceMotion) {
       wf.classList.add('wf-static');
     } else {
-      var wfRender = function () {
-        wfItems.forEach(function (item, i) {
-          var diff = i - wfActive;
-          if (diff < -1) diff += wfTotal;
-          if (diff > 2) diff -= wfTotal;
-          item.setAttribute('data-dist', diff);
-        });
+      var wfTicking = false;
+      var wfUpdate = function () {
+        wfTicking = false;
+        var rect = wfScroll.getBoundingClientRect();
+        var total = wfScroll.offsetHeight - window.innerHeight;
+        if (total <= 0) return;
+        var progress = Math.min(1, Math.max(0, -rect.top / total));
+        var idx = Math.min(wfTotal - 1, Math.floor(progress * wfTotal));
+        if (idx !== wfActive) { wfActive = idx; wfRender(idx); }
       };
-      wfRender();
-      setInterval(function () {
-        wfActive = (wfActive + 1) % wfTotal;
-        wfRender();
-      }, 2200);
+      window.addEventListener('scroll', function () {
+        if (!wfTicking) { wfTicking = true; requestAnimationFrame(wfUpdate); }
+      }, { passive: true });
+      wfUpdate();
     }
   }
 
