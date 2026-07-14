@@ -97,13 +97,36 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  // Pasos del método a pantalla completa: cada paso aparece con fundido al entrar en su propio scroll anidado
+  // Pasos del método a pantalla completa: cada paso aparece con fundido al entrar en vista
+  var msSteps = document.querySelectorAll('.ms-step');
   var msIo = new IntersectionObserver(function (entries) {
     entries.forEach(function (e) {
       e.target.classList.toggle('ms-in', e.isIntersecting);
     });
   }, { threshold: 0.5 });
-  document.querySelectorAll('.ms-step').forEach(function (el) { msIo.observe(el); });
+  msSteps.forEach(function (el) { msIo.observe(el); });
+
+  // Corrección de alineación: si el scroll se detiene a medio camino entre dos pasos, lo ajusta
+  // al paso más cercano (evita quedarse con la pantalla partida entre dos pasos).
+  if (msSteps.length && !reduceMotion) {
+    var msSnapTimer = null;
+    window.addEventListener('scroll', function () {
+      clearTimeout(msSnapTimer);
+      msSnapTimer = setTimeout(function () {
+        var vh = window.innerHeight;
+        var closest = null, closestDist = Infinity;
+        msSteps.forEach(function (step) {
+          var rect = step.getBoundingClientRect();
+          if (rect.bottom < 0 || rect.top > vh) return; // fuera de la vista, ignorar
+          var dist = Math.abs(rect.top);
+          if (dist < closestDist) { closestDist = dist; closest = step; }
+        });
+        if (closest && closestDist > 4 && closestDist < vh) {
+          closest.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 140);
+    }, { passive: true });
+  }
 
   // Cursor personalizado en forma de logotipo (AM) + botones magnéticos (solo desktop con puntero fino)
   var canCustomCursor = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
@@ -159,10 +182,8 @@ document.addEventListener('DOMContentLoaded', function () {
     var syncFloatBar = function () {
       floatBar.classList.toggle('float-hidden', (topVisible && !forceShow) || footerVisible);
     };
-    // En móvil no hace falta esperar a pasar el hero: aparece sola a los 2s (flotando desde abajo)
-    if (window.matchMedia('(max-width:680px)').matches) {
-      setTimeout(function () { forceShow = true; syncFloatBar(); }, 2200);
-    }
+    // No hace falta esperar a pasar el hero/cabecera: aparece sola a los 2s (flotando desde abajo)
+    setTimeout(function () { forceShow = true; syncFloatBar(); }, 2200);
     new IntersectionObserver(function (entries) {
       entries.forEach(function (e) { topVisible = e.isIntersecting; });
       syncFloatBar();

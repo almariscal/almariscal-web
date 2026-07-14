@@ -15,7 +15,7 @@
   --accent-hover:#332C9E;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-snap-type:y proximity}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-snap-type:y proximity;color-scheme:light}
 body{font-family:"Inter",system-ui,-apple-system,sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;font-size:17px}
 a{color:var(--accent);text-decoration:none}
 a:hover{color:var(--accent-hover)}
@@ -109,10 +109,8 @@ body.has-custom-cursor,body.has-custom-cursor a,body.has-custom-cursor button{cu
 .how-close{font-size:17px;max-width:70ch}
 .how-close strong{font-weight:800;color:var(--ink)}
 
-/* ---------- Método: secuencia de pasos a pantalla completa (scroll-snap anidado) ---------- */
-.method-scroller{height:100vh;height:100dvh;overflow-y:auto;scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;scroll-snap-align:start}
-.method-scroller::-webkit-scrollbar{display:none}
-.ms-step{height:100%;scroll-snap-align:start;scroll-snap-stop:always;display:flex;align-items:center;justify-content:center;overflow:hidden}
+/* ---------- Método: secuencia de pasos a pantalla completa (control por JS, sin scroll anidado) ---------- */
+.ms-step{height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .ms-step.ms-dark{background:var(--navy);color:var(--on-navy)}
 .ms-step.ms-light{background:var(--paper);color:var(--ink)}
 .ms-step.ms-dark .kicker{color:var(--on-navy-mid)}
@@ -230,11 +228,11 @@ body.has-custom-cursor,body.has-custom-cursor a,body.has-custom-cursor button{cu
 
 /* ---------- Barra flotante (siempre visible: llamada + LinkedIn) ---------- */
 :root{--float-accent:#4FC3FF;--float-accent-hover:#7DD3FF}
-.float-bar{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:60;display:flex;gap:8px;
+.float-bar{position:fixed;right:20px;bottom:20px;z-index:60;display:flex;gap:8px;
   background:rgba(12,10,82,.7);backdrop-filter:blur(16px) saturate(160%);-webkit-backdrop-filter:blur(16px) saturate(160%);
   border:1px solid rgba(255,255,255,.14);padding:7px;border-radius:999px;box-shadow:0 12px 32px -10px rgba(0,0,0,.5);
   transition:opacity .3s ease,transform .3s ease}
-.float-bar.float-hidden{opacity:0;transform:translateX(-50%) translateY(16px);pointer-events:none}
+.float-bar.float-hidden{opacity:0;transform:translateY(16px);pointer-events:none}
 .float-btn{display:flex;align-items:center;gap:7px;padding:11px 18px;border-radius:999px;font-weight:700;font-size:14px;white-space:nowrap;transition:background .2s,color .2s,transform .2s}
 .float-btn-primary{background:var(--float-accent);color:var(--navy);box-shadow:0 4px 16px -4px rgba(79,195,255,.6)}
 .float-btn-primary:hover{background:var(--float-accent-hover);color:var(--navy);transform:translateY(-1px)}
