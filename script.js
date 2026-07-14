@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.addEventListener('mousemove', function (ev) {
       logo.style.left = ev.clientX + 'px'; logo.style.top = ev.clientY + 'px';
       var el = document.elementFromPoint(ev.clientX, ev.clientY);
-      var onDark = el && el.closest && el.closest('.hero,.word-full,.ms-dark,.trust,.contact,.page-head');
+      var onDark = el && el.closest && el.closest('.hero,.word-full,.ms-dark,.trust,.contact,.page-head,.float-bar');
       logo.classList.toggle('on-dark', !!onDark);
     });
 
@@ -147,5 +147,25 @@ document.addEventListener('DOMContentLoaded', function () {
         encodeURIComponent('[LEAD WEB · Radiografía] ' + (d.get('empresa') || d.get('nombre'))) +
         '&body=' + encodeURIComponent(body);
     });
+  }
+
+  // Barra flotante: aparece solo tras pasar la cabecera (hero/page-head, que ya tiene sus propios CTA)
+  // y se oculta de nuevo al llegar al footer (para no duplicar los mismos enlaces a la vista)
+  var floatBar = document.getElementById('float-bar');
+  var topSection = document.querySelector('.hero,.page-head');
+  var siteFooter = document.querySelector('.site-footer');
+  if (floatBar && topSection && siteFooter) {
+    var topVisible = true, footerVisible = false;
+    var syncFloatBar = function () {
+      floatBar.classList.toggle('float-hidden', topVisible || footerVisible);
+    };
+    new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { topVisible = e.isIntersecting; });
+      syncFloatBar();
+    }, { threshold: 0 }).observe(topSection);
+    new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { footerVisible = e.isIntersecting; });
+      syncFloatBar();
+    }, { threshold: 0.15 }).observe(siteFooter);
   }
 });
