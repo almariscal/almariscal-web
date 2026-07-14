@@ -106,14 +106,39 @@ body.has-custom-cursor,body.has-custom-cursor a,body.has-custom-cursor button{cu
 .section h2{font-weight:800;font-size:44px;letter-spacing:-.03em;line-height:1.14;margin-bottom:16px;max-width:20ch}
 .section .lead-sub{color:var(--text-mid);font-size:18px;max-width:60ch;margin-bottom:36px}
 
-/* ---------- Cómo trabajo (3 pasos) ---------- */
-.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:40px;background:var(--line);border:1px solid var(--line)}
-.how{background:#fff;padding:32px}
-.how-n{font-weight:800;font-size:13px;letter-spacing:.1em;color:var(--accent);margin-bottom:14px}
-.how h3{font-weight:800;font-size:20px;letter-spacing:-.01em;margin-bottom:8px;line-height:1.3}
-.how p{font-size:15px;color:var(--text-mid)}
-.how-close{margin-top:36px;font-size:17px;max-width:70ch}
+.how-close{font-size:17px;max-width:70ch}
 .how-close strong{font-weight:800;color:var(--ink)}
+
+/* ---------- Método: secuencia de pasos a pantalla completa (scroll-snap anidado) ---------- */
+.method-scroller{height:100vh;height:100dvh;overflow-y:auto;scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;scroll-snap-align:start}
+.method-scroller::-webkit-scrollbar{display:none}
+.ms-step{height:100%;scroll-snap-align:start;scroll-snap-stop:always;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.ms-step.ms-dark{background:var(--navy);color:var(--on-navy)}
+.ms-step.ms-light{background:var(--paper);color:var(--ink)}
+.ms-step.ms-dark .kicker{color:var(--on-navy-mid)}
+.ms-step.ms-dark .lead-sub{color:var(--on-navy-mid)}
+.ms-content{max-width:640px;max-height:100%;min-height:0;overflow-y:auto;padding:88px 24px 32px;text-align:center;margin:0 auto;
+  opacity:0;transform:translateY(30px) scale(.97);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
+.ms-step.ms-in .ms-content{opacity:1;transform:none}
+.ms-num{display:block;font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
+.ms-step.ms-dark .ms-num{color:var(--on-navy-mid)}
+.ms-step .when{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.ms-step.ms-dark .when{color:var(--on-navy-mid)}
+.ms-step h3{font-weight:800;font-size:clamp(28px,4vw,40px);letter-spacing:-.02em;margin-bottom:16px;line-height:1.15}
+.ms-step .ms-content>p{font-size:18px;line-height:1.6}
+.ms-step.ms-dark .ms-content>p{color:var(--on-navy-mid)}
+.ms-hint{margin-top:36px;font-size:14px;color:var(--on-navy-mid);animation:ms-bounce 1.8s ease-in-out infinite}
+@keyframes ms-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+.ms-verdict{margin-top:28px;text-align:left}
+.ms-verdict .verdict{padding:22px}
+@media (prefers-reduced-motion:reduce){.ms-hint{animation:none}.ms-content{transition:none;opacity:1;transform:none}}
+
+/* ---------- Veredicto (3 salidas) ---------- */
+.verdict-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:32px;background:var(--line);border:1px solid var(--line)}
+.verdict{padding:30px;background:#fff}
+.verdict .tag{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;border-radius:999px;padding:6px 14px;margin-bottom:18px;border:1.5px solid var(--navy);color:var(--navy)}
+.verdict h3{font-weight:800;font-size:19px;letter-spacing:-.01em;margin-bottom:8px}
+.verdict p{font-size:15px;color:var(--text-mid)}
 
 /* ---------- Confianza (garantía + autoridad) ---------- */
 .trust{background:var(--navy);color:var(--on-navy)}
@@ -203,11 +228,12 @@ body.has-custom-cursor,body.has-custom-cursor a,body.has-custom-cursor button{cu
 
 /* ---------- Responsive ---------- */
 @media (max-width:900px){
-  .how-grid{grid-template-columns:1fr 1fr}
   .hero-grid{grid-template-columns:1fr;min-height:0}
   .hero-photo-bleed{order:-1;height:340px}
   .hero-copy-wrap{padding:52px 0 40px}
   .hero h1{font-size:52px}
+  .ms-verdict{grid-template-columns:1fr 1fr}
+  .ms-step h3{font-size:30px}
 }
 @media (max-width:680px){
   .hero-copy{text-align:center;max-width:none}
@@ -220,9 +246,15 @@ body.has-custom-cursor,body.has-custom-cursor a,body.has-custom-cursor button{cu
   .section{padding:48px 0}
   .section h2{font-size:28px}
   .section .lead-sub{margin-bottom:24px;font-size:16.5px}
-  .how-grid{grid-template-columns:1fr;margin-top:28px}
-  .how{padding:22px}
-  .how-close{margin-top:24px;font-size:15.5px}
+  .how-close{font-size:15.5px}
+  .ms-step h3{font-size:25px}
+  .ms-step .ms-content>p{font-size:16px}
+  .ms-content{padding:20px 20px}
+  .ms-verdict{grid-template-columns:1fr;margin-top:14px;gap:1px}
+  .ms-verdict .verdict{padding:14px}
+  .ms-verdict h3{font-size:16px;margin-bottom:2px}
+  .ms-verdict p{font-size:13.5px}
+  .ms-hint{margin-top:22px}
   .about-layout{flex-direction:column;gap:28px}
   .about-facts{grid-template-columns:1fr;padding-bottom:32px}
   .fact{padding:20px 22px}
