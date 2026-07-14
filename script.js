@@ -155,10 +155,14 @@ document.addEventListener('DOMContentLoaded', function () {
   var topSection = document.querySelector('.hero,.page-head');
   var siteFooter = document.querySelector('.site-footer');
   if (floatBar && topSection && siteFooter) {
-    var topVisible = true, footerVisible = false;
+    var topVisible = true, footerVisible = false, forceShow = false;
     var syncFloatBar = function () {
-      floatBar.classList.toggle('float-hidden', topVisible || footerVisible);
+      floatBar.classList.toggle('float-hidden', (topVisible && !forceShow) || footerVisible);
     };
+    // En móvil no hace falta esperar a pasar el hero: aparece sola a los 2s (flotando desde abajo)
+    if (window.matchMedia('(max-width:680px)').matches) {
+      setTimeout(function () { forceShow = true; syncFloatBar(); }, 2200);
+    }
     new IntersectionObserver(function (entries) {
       entries.forEach(function (e) { topVisible = e.isIntersecting; });
       syncFloatBar();
