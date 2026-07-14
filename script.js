@@ -42,21 +42,13 @@ document.addEventListener('DOMContentLoaded', function () {
     sectionIo.observe(el);
   });
 
-  // Carrusel de palabras a pantalla completa: la palabra activa avanza con el scroll, no con un temporizador
+  // Carrusel de palabras a pantalla completa: posición atada 1:1 al scroll (scrubbing continuo, sin pasos ni temporizador)
   var wf = document.querySelector('.word-full');
   var wfScroll = document.querySelector('.word-full-scroll');
-  if (wf && wfScroll) {
+  var wfBox = document.querySelector('.word-full-display');
+  if (wf && wfScroll && wfBox) {
     var wfItems = wf.querySelectorAll('.wf-item');
     var wfTotal = wfItems.length;
-    var wfActive = -1;
-    var wfRender = function (idx) {
-      wfItems.forEach(function (item, i) {
-        var diff = i - idx;
-        if (diff < -1) diff += wfTotal;
-        if (diff > 2) diff -= wfTotal;
-        item.setAttribute('data-dist', diff);
-      });
-    };
     if (reduceMotion) {
       wf.classList.add('wf-static');
     } else {
@@ -67,8 +59,19 @@ document.addEventListener('DOMContentLoaded', function () {
         var total = wfScroll.offsetHeight - window.innerHeight;
         if (total <= 0) return;
         var progress = Math.min(1, Math.max(0, -rect.top / total));
-        var idx = Math.min(wfTotal - 1, Math.floor(progress * wfTotal));
-        if (idx !== wfActive) { wfActive = idx; wfRender(idx); }
+        var continuous = progress * (wfTotal - 1);
+        var boxH = wfBox.offsetHeight;
+        wfItems.forEach(function (item, i) {
+          var offset = i - continuous;
+          var abs = Math.min(Math.abs(offset), 1.6);
+          var opacity = Math.max(0, 1 - abs * 0.75);
+          var scale = 1 - abs * 0.3;
+          var blur = abs * 3.2;
+          var y = offset * boxH * 0.42;
+          item.style.transform = 'translateY(calc(-50% + ' + y + 'px)) scale(' + scale + ')';
+          item.style.opacity = opacity;
+          item.style.filter = blur ? 'blur(' + blur + 'px)' : 'none';
+        });
       };
       window.addEventListener('scroll', function () {
         if (!wfTicking) { wfTicking = true; requestAnimationFrame(wfUpdate); }

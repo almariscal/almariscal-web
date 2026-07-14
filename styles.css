@@ -65,23 +65,17 @@ img{max-width:100%;display:block}
 .photo-tag strong{display:block;font-weight:800;font-size:14.5px}
 .photo-tag span{color:var(--on-navy-mid)}
 
-/* ---------- Carrusel de palabras a pantalla completa (inspirado en b-ta.ai, avanza con el scroll) ---------- */
-.word-full-scroll{height:400vh;position:relative}
+/* ---------- Carrusel de palabras a pantalla completa (inspirado en b-ta.ai, scrubbing 1:1 con el scroll) ---------- */
+.word-full-scroll{height:220vh;position:relative}
 .word-full{position:sticky;top:0;height:100vh;height:100dvh;background:var(--navy);color:var(--on-navy);display:flex;flex-direction:column;
   align-items:center;justify-content:center;text-align:center;overflow:hidden;padding:24px}
 .word-full-label{font-size:clamp(16px,2.2vw,22px);font-weight:600;color:var(--on-navy-mid);letter-spacing:-.01em;line-height:1.4;margin-bottom:12px}
-.word-full-display{position:relative;width:100%;height:clamp(90px,18vw,220px);overflow:hidden}
+.word-full-display{position:relative;width:100%;height:min(58vh,460px);overflow:hidden}
 .wf-track{position:relative;width:100%;height:100%}
 .wf-item{position:absolute;left:0;right:0;top:50%;text-align:center;white-space:nowrap;font-weight:800;letter-spacing:-.04em;
-  font-size:clamp(48px,13vw,150px);color:var(--on-navy);
-  transform:translateY(-50%);transition:transform .6s cubic-bezier(.4,0,.2,1),opacity .6s ease,filter .6s ease}
-.wf-item[data-dist="0"]{opacity:1;filter:blur(0)}
-.wf-item[data-dist="-1"]{transform:translateY(-170%) scale(.7);opacity:.28;filter:blur(2px)}
-.wf-item[data-dist="1"]{transform:translateY(70%) scale(.7);opacity:.28;filter:blur(2px)}
-.wf-item[data-dist="2"],.wf-item[data-dist="-2"]{opacity:0}
-.word-full.wf-static .wf-item{transition:none}
+  font-size:clamp(48px,13vw,150px);color:var(--on-navy);will-change:transform,opacity,filter}
+.word-full.wf-static .wf-item{transform:translateY(-50%) !important;opacity:1 !important;filter:none !important}
 .word-full.wf-static .wf-item:not(:first-child){display:none}
-.word-full.wf-static .wf-item:first-child{position:static;transform:none;opacity:1;filter:none}
 
 /* ---------- Textura de grano (muy sutil, no es color) ---------- */
 .grain{position:fixed;inset:0;z-index:9998;pointer-events:none;opacity:.03;mix-blend-mode:overlay;
