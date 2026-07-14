@@ -229,15 +229,17 @@ body.has-custom-cursor,body.has-custom-cursor a,body.has-custom-cursor button{cu
 .footer-links a:hover{color:var(--on-navy)}
 
 /* ---------- Barra flotante (siempre visible: llamada + LinkedIn) ---------- */
+:root{--float-accent:#4FC3FF;--float-accent-hover:#7DD3FF}
 .float-bar{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:60;display:flex;gap:8px;
-  background:var(--navy);padding:7px;border-radius:999px;box-shadow:0 12px 32px -10px rgba(0,0,0,.45);
+  background:rgba(12,10,82,.7);backdrop-filter:blur(16px) saturate(160%);-webkit-backdrop-filter:blur(16px) saturate(160%);
+  border:1px solid rgba(255,255,255,.14);padding:7px;border-radius:999px;box-shadow:0 12px 32px -10px rgba(0,0,0,.5);
   transition:opacity .3s ease,transform .3s ease}
 .float-bar.float-hidden{opacity:0;transform:translateX(-50%) translateY(16px);pointer-events:none}
-.float-btn{display:flex;align-items:center;gap:7px;padding:11px 18px;border-radius:999px;font-weight:700;font-size:14px;white-space:nowrap}
-.float-btn-primary{background:#fff;color:var(--navy)}
-.float-btn-primary:hover{background:var(--on-navy-mid);color:var(--navy)}
+.float-btn{display:flex;align-items:center;gap:7px;padding:11px 18px;border-radius:999px;font-weight:700;font-size:14px;white-space:nowrap;transition:background .2s,color .2s,transform .2s}
+.float-btn-primary{background:var(--float-accent);color:var(--navy);box-shadow:0 4px 16px -4px rgba(79,195,255,.6)}
+.float-btn-primary:hover{background:var(--float-accent-hover);color:var(--navy);transform:translateY(-1px)}
 .float-btn-secondary{color:var(--on-navy)}
-.float-btn-secondary:hover{background:rgba(255,255,255,.1);color:#fff}
+.float-btn-secondary:hover{background:rgba(255,255,255,.12);color:#fff}
 .float-btn .cta-ico{font-size:14px;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center}
 .float-btn-secondary .cta-ico{border:1.5px solid rgba(255,255,255,.4);font-size:11px}
 
