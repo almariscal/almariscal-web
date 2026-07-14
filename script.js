@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // Stagger: dentro de un mismo contenedor, cada .reveal se retrasa un poco más que el anterior.
-  document.querySelectorAll('.pain-grid,.verdict-grid,.compare,.milestones,.post-list,.about-facts,.stats-inner').forEach(function (group) {
+  document.querySelectorAll('.how-grid,.post-list,.about-facts').forEach(function (group) {
     Array.prototype.forEach.call(group.querySelectorAll('.reveal'), function (el, i) {
       el.style.transitionDelay = Math.min(i * 70, 280) + 'ms';
     });
@@ -97,14 +97,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  // Pasos del método a pantalla completa: cada paso aparece con fundido al entrar en su propio scroll anidado
-  var msIo = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      e.target.classList.toggle('ms-in', e.isIntersecting);
-    });
-  }, { threshold: 0.5 });
-  document.querySelectorAll('.ms-step').forEach(function (el) { msIo.observe(el); });
-
   // Cursor personalizado en forma de logotipo (AM) + botones magnéticos (solo desktop con puntero fino)
   var canCustomCursor = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   if (canCustomCursor && !reduceMotion) {
@@ -112,11 +104,10 @@ document.addEventListener('DOMContentLoaded', function () {
     var logo = document.createElement('div'); logo.className = 'cursor-logo';
     document.body.appendChild(logo);
 
-    var darkZones = document.querySelectorAll('.hero,.stats,.guarantee,.contact,.page-head');
     document.addEventListener('mousemove', function (ev) {
       logo.style.left = ev.clientX + 'px'; logo.style.top = ev.clientY + 'px';
       var el = document.elementFromPoint(ev.clientX, ev.clientY);
-      var onDark = el && el.closest && el.closest('.hero,.stats,.guarantee,.contact,.page-head,.comp.me');
+      var onDark = el && el.closest && el.closest('.hero,.word-full,.trust,.contact,.page-head');
       logo.classList.toggle('on-dark', !!onDark);
     });
 
@@ -134,20 +125,6 @@ document.addEventListener('DOMContentLoaded', function () {
         btn.style.transform = 'translate(' + (x * 0.18) + 'px,' + (y * 0.35) + 'px)';
       });
       btn.addEventListener('mouseleave', function () { btn.style.transform = ''; });
-    });
-  }
-
-  // Envío del formulario por mailto (sitio estático, sin backend).
-  // Si prefieres Formspree: pon action="https://formspree.io/f/TU_ID" method="POST" en el <form> y borra este bloque.
-  var form = document.getElementById('lead-form');
-  if (form) {
-    form.addEventListener('submit', function (ev) {
-      ev.preventDefault();
-      var d = new FormData(form);
-      var body = 'Nombre: ' + d.get('nombre') + '\nEmpresa: ' + d.get('empresa') + '\nEmail: ' + d.get('email') + '\n\n' + d.get('mensaje');
-      window.location.href = 'mailto:albertolmariscal@gmail.com?subject=' +
-        encodeURIComponent('[LEAD WEB · Radiografía] ' + d.get('empresa')) +
-        '&body=' + encodeURIComponent(body);
     });
   }
 });
